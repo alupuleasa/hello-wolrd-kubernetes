@@ -13,7 +13,5 @@ spec:
       name: http
   selector:
     {{- include "hello-world-kubernetes.selectorLabels" . | nindent 4 }}
-status:
-  loadBalancer:
-    ingress:
-    - ip: 192.168.44.10
+  externalIPs:
+    - {{ .Values.service.externalIPs }}

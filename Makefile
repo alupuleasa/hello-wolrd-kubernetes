@@ -67,7 +67,8 @@ kubectl_deploy: ##           deploy our app
 	kubectl expose deployment hello-world-kubernetes-chart-hwk --type=LoadBalancer --name=my-hwk-service
 
 kubectl_list: ##             list our app
-	kubectl get services my-hwk-service
+	kubectl get services my-hwk-service && echo "\n" && \
+	kubectl get svc
 
 kubectl_clean: ##            clean our app deployment
 	kubectl delete services my-hwk-service \
