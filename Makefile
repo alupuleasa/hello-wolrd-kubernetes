@@ -9,32 +9,32 @@ export RED='\033[0;31m'
 export NC='\033[0m'
 export REGISTRY ?= docker.io
 export REPOSITORY ?= alupuleasa
-export IMAGE = $(REGISTRY)/$(REPOSITORY)/hello-world-kubernetes
+export IMAGE = $(REGISTRY)/$(REPOSITORY)/hello-world
 
 MAKECMD= /usr/bin/make --no-print-directory
 CURRENT_GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 
-all: ##               old style build and test 
-	build test
+# all: ##               old style build and test 
+# 	build test
 
 brun: ##               builds and runs the new binary
 	@$(MAKECMD) build
 	@$(MAKECMD) run
 
-build: ##               old style build
+build: ##               builds docker image
 	docker build \
 		--tag $(IMAGE):$(DOCKER_IMAGE_TAG) \
 		./
 
 run: ##               run the container
-	docker run --name $(DOCKER_IMAGE_NAME) -i -t  -p 3000:3000 $(IMAGE):$(DOCKER_IMAGE_TAG);
+	docker run --name $(DOCKER_IMAGE_NAME) -i -t  -p 80:80 $(IMAGE):$(DOCKER_IMAGE_TAG);
 
 shell: ##               run in shell container
 	docker exec -it $(DOCKER_IMAGE_NAME) bash
 
-clean: ##               cleans
-	docker rm server
-	# docker system prune -af --volumes
+# clean: ##               cleans
+# 	docker rm server
+# 	# docker system prune -af --volumes
 
 stop: ##               stop
 	docker container stop $(docker container ls -aq)
@@ -54,22 +54,29 @@ helm_install: ##             installs helm template
 	cd ./helm/hello-world-kubernetes && \
 	helm install chart-hwk . -f values.yaml
 
-helm_list_endpoints: ##      lists kubernetes endpoints
-	kubectl get endpoints -A
-
-helm_list_pods: ##           lists kubernetes pods
-	kubectl get pods
-
 helm_del: ##               deletes chart
 	helm del $$(helm ls --all --short)
 
-kubectl_deploy: ##           deploy our app
-	kubectl expose deployment hello-world-kubernetes-chart-hwk --type=LoadBalancer --name=my-hwk-service
+svc_url: ##              get service url
+	minikube service hello-world-kubernetes-chart-hwk --url
 
-kubectl_list: ##             list our app
-	kubectl get services my-hwk-service && echo "\n" && \
-	kubectl get svc
+# helm_list_endpoints: ##      lists kubernetes endpoints
+# 	kubectl get endpoints -A
 
-kubectl_clean: ##            clean our app deployment
-	kubectl delete services my-hwk-service \
-	kubectl delete deployment hello-world-kubernetes-chart-hw
+# kubectlt_pods: ##           lists kubernetes pods
+# 	kubectl get pods
+
+# kubectl_deploy: ##           deploy our app
+# 	kubectl expose deployment hello-world-kubernetes-chart-hwk --port=80 --target-port=80 --type=LoadBalancer --name=my-hwk-service
+
+# kubectl_list: ##             list our app
+# 	kubectl get services my-hwk-service && echo "\n" && \
+# 	kubectl get svc
+
+# kubectl_clean: ##            clean our app deployment
+# 	kubectl delete services my-hwk-service \
+# 	kubectl delete deployment hello-world-kubernetes-chart-hwk
+
+# sudo kubectl port-forward pod/hello-world-kubernetes-chart-hwk-575d78d4cd-2mmkl 80:80
+# kubectl get service hello-world-kubernetes-chart-hwk --output='jsonpath={.spec.ports[0].nodePort}'
+# minikube dashboard

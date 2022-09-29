@@ -21,7 +21,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 3000
+    - port: 80
       targetPort: http
       protocol: TCP
       name: http
@@ -29,7 +29,7 @@ spec:
     app.kubernetes.io/name: hello-world-kubernetes
     app.kubernetes.io/instance: release-name
   externalIPs:
-    - 192.168.44.10
+    - 192.168.44.11
 ---
 # Source: hello-world-kubernetes/templates/deployment.yaml
 apiVersion: apps/v1
@@ -55,11 +55,11 @@ spec:
       serviceAccountName: hello-world-kubernetes-release-name
       containers:
         - name: hello-world-kubernetes
-          image: "alupuleasa/hello-world-kubernetes:v1.0.0"
+          image: "alupuleasa/hello-world:v1.0.0"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -70,6 +70,8 @@ spec:
               path: /
               port: http
           env:
+          - name: PORT
+            value: "80"
           - name: KUBERNETES_NAMESPACE
             valueFrom:
               fieldRef:
@@ -83,7 +85,7 @@ spec:
               fieldRef:
                 fieldPath: spec.nodeName
           - name: CONTAINER_IMAGE
-            value: "alupuleasa/hello-world-kubernetes:v1.0.0"
+            value: "alupuleasa/hello-world:v1.0.0"
       nodeSelector:
         kubernetes.io/arch: amd64
         kubernetes.io/os: linux

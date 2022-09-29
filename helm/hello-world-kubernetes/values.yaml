@@ -9,18 +9,18 @@ ingress:
 
 service:
   type: LoadBalancer
-  port: 3000
-  targetPort: 3000
-  externalIPs: 192.168.44.11
+  port: 80
+  targetPort: 80
+  externalIPs: 192.168.49.3
 
 deployment:
   replicaCount: 2
   container:
     image:
-      repository: "alupuleasa/hello-world-kubernetes"
+      repository: "alupuleasa/hello-world"
       tag: "v1.0.0" # uses chart appVersion if not provided
       pullPolicy: IfNotPresent
-    port: 8080
+    port: 80
 
   # Currently only linux images on amd64 architecture are supported - support for arm64 and windows/amd64 coming ...
   nodeSelector:
