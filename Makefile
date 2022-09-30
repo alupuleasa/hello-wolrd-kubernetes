@@ -80,3 +80,9 @@ svc_url: ##              get service url
 # sudo kubectl port-forward pod/hello-world-kubernetes-chart-hwk-575d78d4cd-2mmkl 80:80
 # kubectl get service hello-world-kubernetes-chart-hwk --output='jsonpath={.spec.ports[0].nodePort}'
 # minikube dashboard
+
+#kubectl expose deployment hello-world-kubernetes-chart-hwk --type=LoadBalancer --name=my-hwk-service
+
+
+#http://127.0.0.1:43119
+#http://192.168.49.2:32209
