@@ -84,7 +84,10 @@ svc_url: ##              get service url
 #kubectl expose deployment hello-world-kubernetes-chart-hwk --type=LoadBalancer --name=my-hwk-service
 
 
-#http://127.0.0.1:43119
-#http://192.168.49.2:32209
-#minikube service list
-#https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-reverse-proxy-on-ubuntu-22-04
+# http://127.0.0.1:43119
+# http://192.168.49.2:32209
+# minikube service list
+# minikube service --all
+# https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-reverse-proxy-on-ubuntu-22-04
+# https://www.digitalocean.com/community/tutorials/nginx-access-logs-error-logs
+# kubectl get svc -n kubernetes-dashboard kubernetes-dashboard -o yaml
